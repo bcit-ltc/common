@@ -16,6 +16,48 @@
             };
         </script>
         <script defer src="/js/utils.js"></script>
+        <script>
+            // Copy to clipboard function
+            function copyToClipboard(path, button) {
+                // Get the full URL
+                const fullUrl = window.location.origin + path;
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(fullUrl).then(function() {
+                    // Show feedback
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    button.classList.add('copied');
+                    
+                    // Reset after 2 seconds
+                    setTimeout(function() {
+                        button.textContent = originalText;
+                        button.classList.remove('copied');
+                    }, 2000);
+                }).catch(function(err) {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = fullUrl;
+                    textArea.style.position = 'fixed';
+                    textArea.style.opacity = '0';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        button.textContent = 'Copied!';
+                        button.classList.add('copied');
+                        setTimeout(function() {
+                            button.textContent = 'Copy';
+                            button.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy:', err);
+                        button.textContent = 'Error';
+                    }
+                    document.body.removeChild(textArea);
+                });
+            }
+        </script>
         <style>
             * {
                 margin: 0;
@@ -135,6 +177,35 @@
                 background: #667eea;
                 color: white;
             }
+            
+            .file-actions {
+                display: flex;
+                gap: 0.5rem;
+            }
+            
+            .copy-link {
+                text-decoration: none;
+                color: #28a745;
+                font-weight: 500;
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                background: white;
+                border: 2px solid #28a745;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                font-size: 0.875rem;
+            }
+            
+            .copy-link:hover {
+                background: #28a745;
+                color: white;
+            }
+            
+            .copy-link.copied {
+                background: #28a745;
+                color: white;
+                border-color: #28a745;
+            }
 
             .footer {
                 text-align: center;
@@ -171,7 +242,10 @@
                                 <div class="file-name">Favicon</div>
                                 <div class="file-path">/favicon.ico</div>
                             </div>
-                            <a href="/favicon.ico" class="file-link" target="_blank">View</a>
+                            <div class="file-actions">
+                                <a href="/favicon.ico" class="file-link" target="_blank">View</a>
+                                <button class="copy-link" onclick="copyToClipboard('/favicon.ico', this)">Copy</button>
+                            </div>
                         </li>
                         <li class="file-item">
                             <div class="file-icon">📜</div>
@@ -179,7 +253,10 @@
                                 <div class="file-name">Index Page</div>
                                 <div class="file-path">/index.html</div>
                             </div>
-                            <a href="/index.html" class="file-link" target="_blank">View</a>
+                            <div class="file-actions">
+                                <a href="/index.html" class="file-link" target="_blank">View</a>
+                                <button class="copy-link" onclick="copyToClipboard('/index.html', this)">Copy</button>
+                            </div>
                         </li>
                         <li class="file-item">
                             <div class="file-icon">⚙️</div>
@@ -187,7 +264,10 @@
                                 <div class="file-name">Plausible Analytics</div>
                                 <div class="file-path">/js/utils.js</div>
                             </div>
-                            <a href="/js/utils.js" class="file-link" target="_blank">View</a>
+                            <div class="file-actions">
+                                <a href="/js/utils.js" class="file-link" target="_blank">View</a>
+                                <button class="copy-link" onclick="copyToClipboard('/js/utils.js', this)">Copy</button>
+                            </div>
                         </li>
                     </ul>
                 </section>
