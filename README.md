@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: MPL-2.0 -->
-# LTC CDN
+# LTC Common Assets
 
 Content delivery and proxy service for static assets and third-party API routing.
 - src/js/utils.js → Plausible Analytics that was renamed to avoid ad blockers.
